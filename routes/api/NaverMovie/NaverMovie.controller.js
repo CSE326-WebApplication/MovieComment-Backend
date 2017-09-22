@@ -1,4 +1,5 @@
 const request = require('request');
+var qs = require('querystring');
 
 exports.naverMovie = (req, res) => {
 	const query = require('url').parse(req.url, true).query;
@@ -9,7 +10,7 @@ exports.naverMovie = (req, res) => {
 		'X-Naver-Client-Secret': clientSecret,
 	};
 
-	const url = `https://openapi.naver.com/v1/search/movie.json?query=${query.movieName}`;
+	const url = `https://openapi.naver.com/v1/search/movie.json?query=${qs.escape(query.movieName)}`;
 	const option = {
 		url: url,
 		headers: headers
