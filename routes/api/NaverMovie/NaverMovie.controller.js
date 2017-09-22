@@ -1,6 +1,5 @@
 const request = require('request');
 
-
 exports.naverMovie = (req, res) => {
 	const query = require('url').parse(req.url, true).query;
 	const clientID = '47agx1W9qRZX6adK4up4';
