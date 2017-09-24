@@ -11,6 +11,20 @@ var api = require('./routes/api');
 
 var cors = require('cors');
 
+// MongoDB Connection
+const db_userName = 'nayunhwan';
+const db_password = 'dbsghks!0';
+
+const mongoose = require('mongoose');
+mongoose.connect(`mongodb://${db_userName}:${db_password}@ds147274.mlab.com:47274/cse326`);
+const db = mongoose.connection;
+db.on('error', console.error);
+db.once('open', function(){
+    // CONNECTED TO MONGODB SERVER
+    console.log("Connected to mongod server");
+});
+
+
 var app = express();
 
 app.use(cors());
