@@ -1,5 +1,5 @@
 const request = require('request');
-var qs = require('querystring');
+const qs = require('querystring');
 
 exports.naverMovie = (req, res) => {
 	const query = require('url').parse(req.url, true).query;
