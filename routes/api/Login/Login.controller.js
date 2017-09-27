@@ -1,16 +1,20 @@
 const request = require('request');
 const User = require('../../../models/user');
+const CryptoJS = require("crypto-js");
 
 exports.login = (req, res) => {
+	console.log(req.body);
 	const userId = req.body.userId;
-	const password = req.body.password;
+	const binary = CryptoJS.AES.decrypt(req.body.password, userId);
+	const password = binary.toString(CryptoJS.enc.Utf8);
 
-	console.log(password);
 	User.find({ userId: userId }, (err, users) => {
-		res.send({
-			users: users,
-			userId: userId,
-			isLogin: users[0].password === password,
-		});
+		if (password === users[0].password) {
+			res.send(users[0]);
+		} else {
+			res.send({
+				message: 'Login Fail'
+			})
+		}
 	});
 }
