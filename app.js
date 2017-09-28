@@ -8,6 +8,7 @@ var bodyParser = require('body-parser');
 var index = require('./routes/index');
 var users = require('./routes/users');
 var api = require('./routes/api');
+var auth = require('./routes/auth');
 
 var cors = require('cors');
 
@@ -43,6 +44,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/users', users);
 app.use('/api', api);
+app.use('/auth', auth);
 
 console.log('Start Server at port 3000');
 console.log('Enter to localhost:3000');
