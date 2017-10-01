@@ -1,7 +1,8 @@
 const request = require('request');
 const User = require('../../../models/User');
 const CryptoJS = require('crypto-js');
-const jwt = require('jsonwebtoken');
+const JWT = require('jsonwebtoken');
+const Config = require('../../../Config');
 
 exports.signin = (req, res) => {
 	console.log(req.body);
@@ -20,13 +21,13 @@ exports.signin = (req, res) => {
 			if (user.verify(password)) {
 				// Signin Success
 				return new Promise((resolve, reject) => {
-					jwt.sign(
+					JWT.sign(
 						{
 							_id: user._id,
 							username: user.username,
 							userId: user.userId,
 						},
-						'exitsoft',
+						Config.secretKey,
 						{
 							expiresIn: '1d',
 						},
@@ -55,4 +56,29 @@ exports.signin = (req, res) => {
 			}
 		}
 	});
+}
+
+exports.auth = (req, res) => {
+	const token = req.headers['token'] || req.query.token;
+	// token does not exist
+  if(!token) {
+    return res.status(403).json({
+        success: false,
+        message: 'not logged in'
+    });
+  } else {
+		return new Promise((resolve, reject) => {
+			JWT.verify(token, Config.secretKey, (err, decoded) => {
+        if(err) reject(err);
+        resolve(decoded);
+      });
+		}).then(decoded => {
+			return res.send({
+				result: true,
+				data: decoded
+			});
+		}).catch(err => {
+			return res.send(err);
+		})
+	}
 }
