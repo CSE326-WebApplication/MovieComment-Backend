@@ -26,7 +26,7 @@ User.statics.findOneByUid = function(uid) {
   return this.findOne({ _id: uid }).exec();
 }
 
-User.statics.addMovieComment = function(uid, movieId, comment) {
+User.statics.updateMovieComment = function(uid, movieId, comment) {
   return this.findOneAndUpdate({ _id: uid },
     {
       $set: {
