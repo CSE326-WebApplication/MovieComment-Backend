@@ -10,14 +10,13 @@ var users = require('./routes/users');
 var api = require('./routes/api');
 var auth = require('./routes/auth');
 
+const Config = require('./Config');
+
 var cors = require('cors');
 
 // MongoDB Connection
-const db_userName = 'nayunhwan';
-const db_password = 'dbsghks!0';
-
 const mongoose = require('mongoose');
-mongoose.connect(`mongodb://${db_userName}:${db_password}@ds147274.mlab.com:47274/cse326`);
+mongoose.connect(`mongodb://${Config.db_userName}:${Config.db_password}@${Config.db_url}`);
 const db = mongoose.connection;
 db.on('error', console.error);
 db.once('open', function(){
