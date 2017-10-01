@@ -1,13 +1,14 @@
 const mongoose = require('mongoose');
 const CryptoJS = require("crypto-js");
 
-const userSchema = new mongoose.Schema({
+const User = new mongoose.Schema({
   username: String,
   userId: String,
   password: String,
+  comments: Object,
 });
 
-userSchema.statics.create = function({ username, userId, password }, callback) {
+User.statics.create = function({ username, userId, password }, callback) {
   const user = new this({
     username,
     userId,
@@ -17,12 +18,28 @@ userSchema.statics.create = function({ username, userId, password }, callback) {
   return user.save(err => callback(err));
 }
 
-userSchema.statics.findOneByUserId = function(userId) {
+User.statics.findOneByUserId = function(userId) {
   return this.findOne({ userId }).exec();
 }
 
-userSchema.methods.verify = function(password) {
+User.statics.findOneByUid = function(uid) {
+  return this.findOne({ _id: uid }).exec();
+}
+
+User.statics.addMovieComment = function(uid, movieId, comment) {
+  return this.findOneAndUpdate({ _id: uid },
+    {
+      $set: {
+        comments: {
+            [movieId]: { comment }
+        }
+      }
+    }
+  ).exec();
+}
+
+User.methods.verify = function(password) {
   return this.password === password;
 }
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model('User', User);
