@@ -27,15 +27,19 @@ User.statics.findOneByUid = function(uid) {
 }
 
 User.statics.updateMovieComment = function(uid, movieId, comment) {
-  return this.findOneAndUpdate({ _id: uid },
+  return this.findOneAndUpdate({ "comments.movieId": movieId },
     {
-      $set: {
+      $push: {
         comments: {
-            [movieId]: { comment }
+          movieId: movieId,
+          comment: comment
         }
       }
+    },
+    {
+      upsert: true,
     }
-  ).exec();
+  ).lean().exec();
 }
 
 User.methods.verify = function(password) {
