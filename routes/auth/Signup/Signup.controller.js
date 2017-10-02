@@ -17,7 +17,7 @@ exports.signup = (req, res) => {
 	User.findOneByUserId(userId).then(user => {
 		if (!user) {
 			// Available create new User
-			User.create({ username, userId, password,}, (err) => {
+			User.create({ username, userId, password }, err => {
 				if (err) {
 					console.err(err);
 					res.send({
