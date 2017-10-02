@@ -74,7 +74,7 @@ exports.auth = (req, res) => {
       });
 		}).then(decoded => {
 			return res.send({
-				result: true,
+				signinResult: true,
 				data: decoded
 			});
 		}).catch(err => {
