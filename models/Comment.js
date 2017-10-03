@@ -6,9 +6,10 @@ const Comment = new mongoose.Schema({
   username: String,
   movieId: String,
   text: String,
+  rating: Number,
 });
 
-Comment.statics.create = function({ userUid, movieId, text }, callback) {
+Comment.statics.create = function({ userUid, movieId, text, rating }, callback) {
   User.findOneByUid(userUid).then(user => {
     console.log(user);
     const username = user.username;
@@ -17,6 +18,7 @@ Comment.statics.create = function({ userUid, movieId, text }, callback) {
       username,
       movieId,
       text,
+      rating,
     });
     return comment.save(err => callback(err));
   });
