@@ -6,7 +6,7 @@ const Comment = require('../../../models/Comment');
 
 // Update or Create a movie comment searched by user uid
 
-exports.updateComment = (req, res) => {
+exports.createComment = (req, res) => {
 	const userUid = req.headers['uid'];
 	const body = req.body;
 	const movieId = body.movieId;
