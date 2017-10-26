@@ -75,13 +75,9 @@ exports.createComment = (req, res) => {
 			});
 		});
 	});
-
-
-
 }
 
 // Get a movie comment
-
 exports.searchCommentByUserUidAndMovieId = (req, res) => {
 	const userUid = req.headers['uid'];
 	const body = req.body;
@@ -103,6 +99,27 @@ exports.getCommentList = (req, res) => {
 		res.send({
 			message: "Success to get comments list",
 			data: comments,
+		});
+	});
+}
+
+// Get average score of movie by Movie ID
+exports.getScore = (req, res) => {
+	const body = req.body;
+	const movieId = body.movieId;
+
+	Comment.searchByMovieId(movieId).then(comments => {
+		let sumScore = 0;
+	  comments.forEach(comment => {
+	    sumScore += comment.rating;
+	  });
+
+		res.send({
+			message: "Success to get score of movie",
+			data: {
+				avgScore: sumScore / comments.length,
+				commentCount: comments.length,
+			},
 		});
 	});
 }
