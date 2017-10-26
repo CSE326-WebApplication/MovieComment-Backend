@@ -109,6 +109,18 @@ exports.getScore = (req, res) => {
 	const movieId = body.movieId;
 
 	Comment.searchByMovieId(movieId).then(comments => {
+		
+		// Guard condition when the movie doesn't have any comments
+		if (comments.length === 0) {
+			res.send({
+				message: "Success to get score of movie but it doesn't have any comments",
+				data: {
+					avgScore: null,
+					commentCount: 0,
+				}
+			});
+		}
+
 		let sumScore = 0;
 	  comments.forEach(comment => {
 	    sumScore += comment.rating;
