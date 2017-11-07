@@ -42,7 +42,7 @@ exports.signup = (req, res) => {
 	});
 }
 
-exports.checkDuplicatedId = (req, res) => {
+exports.checkDuplicatedUserId = (req, res) => {
 	const userId = req.body.userId;
 	User.findOneByUserId(userId).then(user => {
 		res.send({
