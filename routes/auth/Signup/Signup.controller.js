@@ -45,8 +45,6 @@ exports.signup = (req, res) => {
 exports.checkDuplicatedUserId = (req, res) => {
 	const userId = req.body.userId;
 	User.findOneByUserId(userId).then(user => {
-		res.send({
-			isDuplicated: !!user,
-		});
+		res.send(!!user);
 	});
 }
