@@ -39,7 +39,14 @@ exports.signup = (req, res) => {
 				data: null,
 			})
 		}
-	})
+	});
+}
 
-
+exports.checkDuplicatedId = (req, res) => {
+	const userId = req.body.userId;
+	User.findOneByUserId(userId).then(user => {
+		res.send({
+			isDuplicated: !!user,
+		});
+	});
 }
