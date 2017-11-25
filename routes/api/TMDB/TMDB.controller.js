@@ -10,7 +10,7 @@ exports.tmdbSearch = (req, res) => {
 	});
 }
 
-exports.getBoxoffice = (req, res) => {
+exports.getBoxoffices = (req, res) => {
 	const url = `https://api.themoviedb.org/3/movie/now_playing?api_key=${key}&language=ko&page=1`;
 	request.get(url, (err, result, body) => {
 		res.send(body);
