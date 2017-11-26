@@ -137,7 +137,7 @@ exports.getScore = (req, res) => {
 }
 
 // Get list of movies sorted by count of comment
-exports.getMoviesSortedByCount = (req, res) => {
+exports.getMovies = (req, res) => {
 	const limit = (req.query.limit != null) ? parseInt(req.query.limit) : null;
 	const sortby = req.query.sortby;
 	if (sortby == null) {
