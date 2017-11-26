@@ -31,10 +31,14 @@ Comment.statics.searchByMovieId = function(movieId) {
   return this.find({ movieId }, { username: true, movieId: true, text: true, rating: true }).exec();
 }
 
-Comment.statics.getMoviesSortedByCommentsCount = function() {
+Comment.statics.getMoviesSortedByCount = function(limit) {
+  if (limit == null) limit = 20;
   return this.aggregate([
       { "$group": { _id: "$movieId", count: { $sum: 1 } } },
-      { "$sort": { count: -1 } }
+      { "$sort": { count: -1 } },
+      { "$limit": limit }
+  ]).exec();
+}
   ]).exec();
 }
 
