@@ -137,11 +137,32 @@ exports.getScore = (req, res) => {
 }
 
 // Get list of movies sorted by count of comment
-exports.getMoviesSortedByCommentsCount = (req, res) => {
-	Comment.getMoviesSortedByCommentsCount().then(movies => {
+exports.getMoviesSortedByCount = (req, res) => {
+	const limit = (req.query.limit != null) ? parseInt(req.query.limit) : null;
+	const sortby = req.query.sortby;
+	if (sortby == null) {
 		res.send({
-			message: "Success to get list of movies sorted by comments count",
-			data: movies
+			message: "Empty value 'sortby' :: 'sortby' must have value 'comment' or 'rating'",
+			data: null,
 		});
-	});
+	} else if (sortby == 'comment') {
+		Comment.getMoviesSortedByCount(limit).then(movies => {
+			res.send({
+				message: "Success to get list of movies sorted by comments count",
+				data: movies,
+			});
+		});
+	} else if (sortby == 'rating') {
+		Comment.getMoviesSortedByRating(limit).then(movies => {
+			res.send({
+					message: "Success to get list of movies sorted by comments rating",
+					data: movies,
+			});
+		});
+	} else {
+		res.send({
+			message: "Invalid value 'sortby' :: 'sortby' must have value only 'comment' or 'rating'",
+			data: null,
+		});
+	}
 }
