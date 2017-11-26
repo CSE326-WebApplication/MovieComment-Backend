@@ -9,7 +9,7 @@ const Comment = new mongoose.Schema({
   rating: Number,
 });
 
-Comment.statics.create = ({ userUid, movieId, text, rating }, callback) => {
+Comment.statics.create = function({ userUid, movieId, text, rating }, callback) {
   User.findOneByUid(userUid).then(user => {
     const username = user.username;
     const comment = new this({
@@ -23,15 +23,15 @@ Comment.statics.create = ({ userUid, movieId, text, rating }, callback) => {
   });
 }
 
-Comment.statics.searchByUserUidAndMovieId = (userUid, movieId) => {
+Comment.statics.searchByUserUidAndMovieId = function(userUid, movieId) {
   return this.findOne({ userUid, movieId }).exec();
 }
 
-Comment.statics.searchByMovieId = movieId => {
+Comment.statics.searchByMovieId = function(movieId) {
   return this.find({ movieId }, { username: true, movieId: true, text: true, rating: true }).exec();
 }
 
-Comment.statics.getMoviesSortedByCommentsCount = () => {
+Comment.statics.getMoviesSortedByCommentsCount = function() {
   return this.aggregate([
       { "$group": { _id: "$movieId", count: { $sum: 1 } } },
       { "$sort": { count: -1 } }
