@@ -9,7 +9,7 @@ const Comment = new mongoose.Schema({
   rating: Number,
 });
 
-Comment.statics.create = function({ userUid, movieId, text, rating }, callback) {
+Comment.statics.create = ({ userUid, movieId, text, rating }, callback) => {
   User.findOneByUid(userUid).then(user => {
     const username = user.username;
     const comment = new this({
@@ -23,11 +23,11 @@ Comment.statics.create = function({ userUid, movieId, text, rating }, callback) 
   });
 }
 
-Comment.statics.searchByUserUidAndMovieId = function(userUid, movieId) {
+Comment.statics.searchByUserUidAndMovieId = (userUid, movieId) => {
   return this.findOne({ userUid, movieId }).exec();
 }
 
-Comment.statics.searchByMovieId = function(movieId) {
+Comment.statics.searchByMovieId = movieId => {
   return this.find({ movieId }, { username: true, movieId: true, text: true, rating: true }).exec();
 }
 
