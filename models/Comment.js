@@ -39,6 +39,13 @@ Comment.statics.getMoviesSortedByCount = function(limit) {
       { "$limit": limit }
   ]).exec();
 }
+
+Comment.statics.getMoviesSortedByRating = function(limit) {
+  if (limit == null) limit = 20;
+  return this.aggregate([
+    { "$group": { _id: "$movieId", rating: { $avg: "$rating" } } },
+    { "$sort": { rating: -1 } },
+    { "$limit": limit }
   ]).exec();
 }
 
