@@ -109,7 +109,7 @@ exports.getScore = (req, res) => {
 	const movieId = body.movieId;
 
 	Comment.searchByMovieId(movieId).then(comments => {
-		
+
 		// Guard condition when the movie doesn't have any comments
 		if (comments.length === 0) {
 			res.send({
@@ -132,6 +132,16 @@ exports.getScore = (req, res) => {
 				avgScore: sumScore / comments.length,
 				commentCount: comments.length,
 			},
+		});
+	});
+}
+
+// Get list of movies sorted by count of comment
+exports.getMoviesSortedByCommentsCount = (req, res) => {
+	Comment.getMoviesSortedByCommentsCount().then(movies => {
+		res.send({
+			message: "Success to get list of movies sorted by comments count",
+			data: movies
 		});
 	});
 }

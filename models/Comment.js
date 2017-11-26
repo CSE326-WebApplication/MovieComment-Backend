@@ -11,7 +11,6 @@ const Comment = new mongoose.Schema({
 
 Comment.statics.create = function({ userUid, movieId, text, rating }, callback) {
   User.findOneByUid(userUid).then(user => {
-    console.log(user);
     const username = user.username;
     const comment = new this({
       userUid,
@@ -30,6 +29,13 @@ Comment.statics.searchByUserUidAndMovieId = function(userUid, movieId) {
 
 Comment.statics.searchByMovieId = function(movieId) {
   return this.find({ movieId }, { username: true, movieId: true, text: true, rating: true }).exec();
+}
+
+Comment.statics.getMoviesSortedByCommentsCount = () => {
+  return this.aggregate([
+      { "$group": { _id: "$movieId", count: { $sum: 1 } } },
+      { "$sort": { count: -1 } }
+  ]).exec();
 }
 
 module.exports = mongoose.model('Comment', Comment);
