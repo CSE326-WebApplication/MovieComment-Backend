@@ -14,7 +14,7 @@ exports.getBoxoffices = (req, res) => {
 	const url = `https://api.themoviedb.org/3/movie/now_playing?api_key=${key}&language=ko&page=1`;
 	request.get(url, (err, result, body) => {
 		res.send(body);
-	})
+	});
 }
 
 exports.getMovie = (req, res) => {
@@ -23,5 +23,5 @@ exports.getMovie = (req, res) => {
 	const url = `https://api.themoviedb.org/3/movie/${movieId}?api_key=${key}&language=ko`;
 	request.get(url, (err, result, body) => {
 		res.send(body);
-	})
+	});
 }
