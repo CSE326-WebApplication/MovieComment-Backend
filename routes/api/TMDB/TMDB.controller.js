@@ -16,3 +16,12 @@ exports.getBoxoffices = (req, res) => {
 		res.send(body);
 	})
 }
+
+exports.getMovie = (req, res) => {
+	const query = req.query;
+	const movieId = query.movie_id;
+	const url = `https://api.themoviedb.org/3/movie/${movieId}?api_key=${key}&language=ko`;
+	request.get(url, (err, result, body) => {
+		res.send(body);
+	})
+}
