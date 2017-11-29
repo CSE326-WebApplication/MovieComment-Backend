@@ -11,15 +11,24 @@ const Comment = new mongoose.Schema({
 
 Comment.statics.create = function({ userUid, movieId, text, rating }, callback) {
   User.findOneByUid(userUid).then(user => {
-    const username = user.username;
-    const comment = new this({
-      userUid,
-      username,
-      movieId,
-      text,
-      rating,
+    this.searchByUserUidAndMovieId(userUid, movieId).then(prevComment => {
+      const username = user.username;
+      const comment = new this({
+        userUid,
+        username,
+        movieId,
+        text,
+        rating,
+      });
+      if (prevComment) {
+        prevComment.set({
+          text,
+          rating,
+        });
+        return prevComment.save(err => callback(err));
+      }
+      return comment.save(err => callback(err));
     });
-    return comment.save(err => callback(err));
   });
 }
 
