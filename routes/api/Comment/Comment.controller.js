@@ -21,25 +21,25 @@ exports.createComment = (req, res) => {
 	const _promise = new Promise((resolve, reject) => {
 		// Request Translate API
 		const translateOption = {
-			url: `https://api.microsofttranslator.com/v2/http.svc/Translate?text=${qs.escape(text)}&from=ko&to=en`,
+			url: 'https://openapi.naver.com/v1/language/translate',
 			headers: {
-				'Ocp-Apim-Subscription-Key': Config.translateKey,
-			}
+				'Content-Type': "application/json",
+				'X-Naver-Client-Id': Config.naver_client_id,
+				'X-Naver-Client-Secret': Config.naver_client_secret
+			},
+			body: JSON.stringify({
+				text: text,
+				source: "ko",
+				target: "en"
+			}),
 		};
 
-		request.get(translateOption, (err, result, body) => {
+		request.post(translateOption, (err, result, body) => {
 			if (err) reject(err);
 			else resolve(body);
 		});
-	}).then(translated => {
-		return new Promise((resolve, reject) => {
-			// Parsing XML to string
-			xml2js.parseString(translated, (err, res) => {
-				if (err) reject(err);
-				else resolve(res.string._);
-			});
-		});
-	}).then(parsedString => {
+	}).then(translatedData => {
+		const translatedText = JSON.parse(translatedData).message.result.translatedText
 		// Request Text Emotion API
 		const emotionOption = {
 			url: 'https://westus.api.cognitive.microsoft.com/text/analytics/v2.0/sentiment',
@@ -51,7 +51,7 @@ exports.createComment = (req, res) => {
 					documents: [{
 			      language: "en",
 			      id: "string",
-			      text: parsedString,
+			      text: translatedText,
 		    }],
 			}),
 		};
